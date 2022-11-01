@@ -12,6 +12,7 @@ namespace WebProjectExam.Controllers
 {
     public class HomeController : Controller
     {
+        private int counter = 0;
         private readonly IUserServices _userServices;
         private readonly ILogger<HomeController> _logger;
 
@@ -23,8 +24,12 @@ namespace WebProjectExam.Controllers
 
         public IActionResult Index()
         {
-            _userServices.SeedRoles();
-            _userServices.SeedAdmin();
+            if(counter == 0)
+            {
+                _userServices.SeedRoles();
+                _userServices.SeedAdmin();
+                counter++;
+            }
             return View();
         }
 
