@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using WebProjectExam.Database;
+using WebProjectExam.Models.Entities;
+using WebProjectExam.Services.UserServices;
 
 namespace WebProjectExam
 {
@@ -20,11 +20,50 @@ namespace WebProjectExam
 
         public IConfiguration Configuration { get; }
 
+
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //Connection to Database
+            services.AddDbContext<ShoeStoreDbContext>(options
+                    => options.UseSqlServer(Configuration["connectionString:DefaultConnection"]));
+
+            //Add identity
+            services.AddIdentity<User, IdentityRole>(options => options.Password = new PasswordOptions
+            {
+                RequireDigit = false,
+                RequiredLength = 1,
+                RequireLowercase = false,
+                RequireUppercase = false,
+                RequiredUniqueChars = 0,
+                RequireNonAlphanumeric = false
+            })
+    .AddEntityFrameworkStores<ShoeStoreDbContext>()
+    .AddDefaultTokenProviders();
+
+
+
+            services.AddMvc();
+            services.AddRazorPages();
             services.AddControllersWithViews();
+
+            services.AddTransient<IUserServices, UserServices>();
         }
+
+        /*.SignIn.RequireConfirmedAccount = false*/
+
+        //    services.AddIdentity<ApplicationUser, IdentityRole>(Configuration,
+        //options => 
+        //    options.Password = new PasswordOptions 
+        //    { 
+        //        RequireDigit = true, 
+        //        RequiredLength = 6, 
+        //        RequireLowercase = true, 
+        //        RequireUppercase = true, 
+        //        RequireNonLetterOrDigit = false 
+        //    })
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,15 +81,18 @@ namespace WebProjectExam
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
