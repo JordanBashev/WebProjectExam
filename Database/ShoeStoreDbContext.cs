@@ -24,8 +24,8 @@ namespace WebProjectExam.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost;Database=ShoeStore;User Id=sa;Password=MyPassword123#;");
-                                       //Jordan's connection string : Configuration["connectionString:DefaultConnection"]
+            optionsBuilder.UseSqlServer(Configuration["connectionString:DefaultConnection"]);
+                                      
         }
     }
 }
