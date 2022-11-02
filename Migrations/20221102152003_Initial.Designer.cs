@@ -10,7 +10,7 @@ using WebProjectExam.Database;
 namespace WebProjectExam.Migrations
 {
     [DbContext(typeof(ShoeStoreDbContext))]
-    [Migration("20221102075944_Initial")]
+    [Migration("20221102152003_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -152,6 +152,23 @@ namespace WebProjectExam.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WebProjectExam.Models.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("user_Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("user_Id");
+
+                    b.ToTable("orders");
+                });
+
             modelBuilder.Entity("WebProjectExam.Models.Entities.User", b =>
                 {
                     b.Property<string>("Id")
@@ -269,6 +286,15 @@ namespace WebProjectExam.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebProjectExam.Models.Entities.Order", b =>
+                {
+                    b.HasOne("WebProjectExam.Models.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("user_Id");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
