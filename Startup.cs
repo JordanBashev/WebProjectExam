@@ -30,9 +30,8 @@ namespace WebProjectExam
         {
             //Connection to Database
             services.AddDbContext<ShoeStoreDbContext>(options
-                    => options.UseSqlServer("Server=localhost;Database=ShoeStore;User Id=sa;Password=MyPassword123#;"));
-            //Jordan's conection string :  Server=DESKTOP-53TVEML\\SQLEXPRESS;Database=ShoeStore;Trusted_Connection=True;
-
+                    => options.UseSqlServer(Configuration["connectionString:DefaultConnection"]));
+            
             //Add identity
             services.AddIdentity<User, IdentityRole>(options => options.Password = new PasswordOptions
             {
