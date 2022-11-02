@@ -21,7 +21,7 @@ namespace WebProjectExam
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-        }
+       }
 
         public IConfiguration Configuration { get; }
 
@@ -30,7 +30,8 @@ namespace WebProjectExam
         {
             //Connection to Database
             services.AddDbContext<ShoeStoreDbContext>(options
-                    => options.UseSqlServer(Configuration["connectionString:DefaultConnection"]));
+                    => options.UseSqlServer("Server=localhost;Database=ShoeStore;User Id=sa;Password=MyPassword123#;"));
+            //Jordan's conection string :  Server=DESKTOP-53TVEML\\SQLEXPRESS;Database=ShoeStore;Trusted_Connection=True;
 
             //Add identity
             services.AddIdentity<User, IdentityRole>(options => options.Password = new PasswordOptions
