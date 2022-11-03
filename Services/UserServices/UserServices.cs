@@ -10,7 +10,6 @@ namespace WebProjectExam.Services.UserServices
 {
     public class UserServices : IUserServices
     {
-        bool disposed = false;
         private readonly ShoeStoreDbContext _context;
         public UserServices(ShoeStoreDbContext context)
         {

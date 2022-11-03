@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebProjectExam.Database;
 using WebProjectExam.Models.Entities;
+using WebProjectExam.Services.OrderSevices;
+using WebProjectExam.Services.ShoeServices;
 using WebProjectExam.Services.UserServices;
 
 namespace WebProjectExam
@@ -52,7 +54,10 @@ namespace WebProjectExam
             services.AddControllersWithViews();
 
             services.AddScoped<IUserServices, UserServices>();
+            services.AddScoped<IOrderServices ,OrderServices>();
+            services.AddScoped<IShoeServices, ShoeServices>();
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
