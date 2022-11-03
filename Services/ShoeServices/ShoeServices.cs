@@ -28,4 +28,3 @@ namespace WebProjectExam.Services.ShoeServices
 
     }
 }
-
