@@ -14,8 +14,8 @@ namespace WebProjectExam.Services.UserServices
 {
     public class UserServices : IUserServices
     {
-
         private readonly ShoeStoreDbContext _context;
+        
         public UserServices(ShoeStoreDbContext context)
         {
             _context = context;

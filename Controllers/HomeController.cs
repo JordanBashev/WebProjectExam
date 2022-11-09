@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WebProjectExam.Models;
+using WebProjectExam.Services.OrderSevices;
+using WebProjectExam.Services.ShoeServices;
 using WebProjectExam.Services.UserServices;
 
 namespace WebProjectExam.Controllers
@@ -14,12 +16,18 @@ namespace WebProjectExam.Controllers
     {
         private int counter = 0;
         private readonly IUserServices _userServices;
+        private readonly IOrderServices _orderServices;
+        private readonly IShoeServices _shoeServices;
         private readonly ILogger<HomeController> _logger;
+        
 
-        public HomeController(ILogger<HomeController> logger, IUserServices userServices)
+        public HomeController(ILogger<HomeController> logger, IUserServices userServices , IOrderServices orderServices , IShoeServices shoeServices)
         {
             _userServices = userServices;
             _logger = logger;
+            _orderServices = orderServices;
+            _shoeServices = shoeServices;
+            
         }
 
         public IActionResult Index()
@@ -28,6 +36,8 @@ namespace WebProjectExam.Controllers
             {
                 _userServices.SeedRoles();
                 _userServices.SeedAdmin();
+                _orderServices.seedOrders();
+                _shoeServices.seedShoes();
                 counter++;
             }
             return View();

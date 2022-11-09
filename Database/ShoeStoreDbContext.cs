@@ -22,11 +22,17 @@ namespace WebProjectExam.Database
             Configuration = configuration;
         }
 
+
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Order> orders { get; set; }
+        public DbSet<Shoe> Shoes { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(Configuration["connectionString:DefaultConnection"]);
+                                      
         }
+         
     }
 }

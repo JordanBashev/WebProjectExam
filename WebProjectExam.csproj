@@ -22,4 +22,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Services\OrderSevices\" />
+    <None Remove="Services\ShoeServices\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\OrderSevices\" />
+    <Folder Include="Services\ShoeServices\" />
+  </ItemGroup>
 </Project>
