@@ -13,6 +13,16 @@ namespace WebProjectExam.Services.OrderSevices
             _context = context;
         }
 
+        public void Delete(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Edit(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void seedOrders()
         {
             var finduserbyname = _context.Users.FirstOrDefault(x => x.UserName == "admin");
