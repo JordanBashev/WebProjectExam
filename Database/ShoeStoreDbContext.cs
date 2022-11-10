@@ -26,6 +26,7 @@ namespace WebProjectExam.Database
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Order> orders { get; set; }
         public DbSet<Shoe> Shoes { get; set; }
+        public DbSet<Brand> Brands { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

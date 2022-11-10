@@ -8,6 +8,7 @@ namespace WebProjectExam.Models.Entities
         public string Colour { get; set; }
         public double  Size { get; set; }
 
+        
     }
 }
 
