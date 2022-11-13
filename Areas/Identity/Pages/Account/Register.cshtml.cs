@@ -48,6 +48,10 @@ namespace WebProjectExam.Areas.Identity.Pages.Account
             public string Username { get; set; }
 
             [Required]
+            [Display(Name = "Email Address")]
+            public string Email { get; set; }
+
+            [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -70,8 +74,9 @@ namespace WebProjectExam.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Username};
+                var user = new User { UserName = Input.Username, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                await _userManager.AddToRoleAsync(user, "Customer");
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

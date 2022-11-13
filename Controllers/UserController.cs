@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections;
+using System.Data;
+using System.Threading.Tasks;
 using WebProjectExam.Models.ViewModels.UserVMs;
 using WebProjectExam.Services.UserServices;
 
@@ -39,7 +42,12 @@ namespace WebProjectExam.Controllers
             model.Username = currUser.UserName;
             model.PhoneNumber = currUser.PhoneNumber;
             model.EmailAddress = currUser.Email;
-            model.Role = _userServices.FindUserRoleById(Id).Name;
+            model.Role = _userServices.FindUserRoleById(Id);
+            if (model.Role == null)
+            {
+                model.Role.Name = "None";              
+            }
+            
             return View(model);
         }
 
@@ -48,12 +56,18 @@ namespace WebProjectExam.Controllers
         {
             if (ModelState.IsValid)
             {
+                var checkIsUserCustomer = _userServices.FindUserRoleById(model.Id);
+                if(checkIsUserCustomer.Name == "Customer")
+                {
+                    model.Role = checkIsUserCustomer;
+                }
+                
                 _userServices.Edit(model);
             }
             return RedirectToAction(nameof(AllUsers));
         }
 
-        public IActionResult Delete(string id)        
+        public IActionResult Delete(string id)
         {
             _userServices.Delete(id);
             return RedirectToAction(nameof(AllUsers));
@@ -68,7 +82,14 @@ namespace WebProjectExam.Controllers
                 foreach (var user in model.Users)
                 {
                     var Role = _userServices.FindUserRole(user);
-                    user.Role = Role.Name;
+                    if (Role != null)
+                    {
+                        user.Role = Role.Name;
+                    }
+                    else
+                    {
+                        user.Role = "None";
+                    }
                 }
             }
             return View(model);

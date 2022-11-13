@@ -1,8 +1,10 @@
 ﻿using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -15,7 +17,7 @@ namespace WebProjectExam.Services.UserServices
     public class UserServices : IUserServices
     {
         private readonly ShoeStoreDbContext _context;
-        
+
         public UserServices(ShoeStoreDbContext context)
         {
             _context = context;
@@ -24,7 +26,7 @@ namespace WebProjectExam.Services.UserServices
         //Adds roles on initial run
         public void SeedRoles()
         {
-            string[] roles = { "Admin", "Worker" };
+            string[] roles = { "Admin", "Worker", "Customer" };
 
             if (!_context.Roles.Any(r => r.Name == "admin"))
             {
@@ -78,13 +80,17 @@ namespace WebProjectExam.Services.UserServices
             _context.SaveChanges();
         }
 
+        //Adds new user if such user doesn't exists else edits the user and their role if changed
         public void Edit(EditUserVM userToEdit)
         {
+            //finds user if he exists
             var checkIfExists = FindUser(userToEdit.Id);
-            var getRoleId = _context.Roles.FirstOrDefault(x => x.Id == userToEdit.Role);
+            //gets the role to be changed/given if new user or editing
+            var getRoleId = _context.Roles.FirstOrDefault(x => x.Id == userToEdit.Role.Id);
 
             if (checkIfExists == null)
             {
+                //prepare new role and user to add
                 var Roles = new IdentityUserRole<string>();
                 var user = new User()
                 {
@@ -98,7 +104,7 @@ namespace WebProjectExam.Services.UserServices
                     SecurityStamp = Guid.NewGuid().ToString()
                 };
 
-                //checks if user with given name exists if true dont add else add and make him admin
+                //checks if user with given name exists if true dont add else add and give him the chosen role
                 if (!_context.Users.Any(u => u.UserName == user.UserName))
                 {
                     Roles.RoleId = getRoleId.Id;
@@ -112,27 +118,63 @@ namespace WebProjectExam.Services.UserServices
             }
             else
             {
+                //Get the Id of the user to change their role
                 var Roles = _context.UserRoles.FirstOrDefault(x => x.UserId == checkIfExists.Id);
+                if (Roles != null)
+                {
+                    var isUserCustomer = _context.Roles.FirstOrDefault(x => x.Id == Roles.RoleId);
+                    //Set changes 
+                    checkIfExists.UserName = userToEdit.Username;
+                    checkIfExists.NormalizedUserName = userToEdit.Username.ToLower();
+                    checkIfExists.Email = userToEdit.EmailAddress;
+                    checkIfExists.NormalizedEmail = userToEdit.EmailAddress.ToLower();
+                    checkIfExists.PhoneNumber = userToEdit.PhoneNumber;
+                    checkIfExists.EmailConfirmed = false;
+                    checkIfExists.LockoutEnabled = false;
 
-                checkIfExists.UserName = userToEdit.Username;
-                checkIfExists.NormalizedUserName = userToEdit.Username.ToLower();
-                checkIfExists.Email = userToEdit.EmailAddress;
-                checkIfExists.NormalizedEmail = userToEdit.EmailAddress.ToLower();
-                checkIfExists.PhoneNumber = userToEdit.PhoneNumber;
-                checkIfExists.EmailConfirmed = false;
-                checkIfExists.LockoutEnabled = false;
-            //
 
-                _context.Users.Update(checkIfExists);
-                _context.UserRoles.Remove(Roles);
-                _context.SaveChanges();
-                Roles.RoleId = getRoleId.Id;
-                Roles.UserId = checkIfExists.Id;
-                _context.UserRoles.Add(Roles);
+                    //Update the user data
+                    _context.Users.Update(checkIfExists);
+                    //Remove UserRole of the user and prepare to change their role if he is not Customer
+                    if (isUserCustomer.Name != "Customer")
+                    {
+                        _context.UserRoles.Remove(Roles);
+                        _context.SaveChanges();
+                        //Set the new role thats given to the user and add
+                        Roles.RoleId = getRoleId.Id;
+                        Roles.UserId = checkIfExists.Id;
+                        _context.UserRoles.Add(Roles);
+                    }
+                }
+                else
+                {
+                    var userRoles = new IdentityUserRole<string>()
+                    {
+                        RoleId = getRoleId.Id,
+                        UserId = checkIfExists.Id
+                    };
+                    //Set changes 
+                    checkIfExists.UserName = userToEdit.Username;
+                    checkIfExists.NormalizedUserName = userToEdit.Username.ToLower();
+                    checkIfExists.Email = userToEdit.EmailAddress;
+                    checkIfExists.NormalizedEmail = userToEdit.EmailAddress.ToLower();
+                    checkIfExists.PhoneNumber = userToEdit.PhoneNumber;
+                    checkIfExists.EmailConfirmed = false;
+                    checkIfExists.LockoutEnabled = false;
+
+                    //Update the user data
+                    _context.Users.Update(checkIfExists);
+                    _context.UserRoles.Add(userRoles);
+                }
+
             }
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// Remove User by id
+        /// </summary>
+        /// <param name="Id"></param>
         public void Delete(string Id)
         {
             User user = _context.Users.Find(Id);
@@ -140,6 +182,10 @@ namespace WebProjectExam.Services.UserServices
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// Get All Users
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<UserVM> GetAll()
         {
             var users = _context.Users.Select(MapToEditUserVM()).ToList();
@@ -147,6 +193,11 @@ namespace WebProjectExam.Services.UserServices
             return users;
         }
 
+
+        /// <summary>
+        /// Get all Roles
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<EditRolesVM> GetAllRoles()
         {
             var roles = _context.Roles.Select(MapToEditRolesVM()).ToList();
@@ -154,6 +205,12 @@ namespace WebProjectExam.Services.UserServices
             return roles;
         }
 
+
+        /// <summary>
+        /// Find User by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public User FindUser(string id)
         {
             var user = _context.Users.Find(id);
@@ -161,25 +218,46 @@ namespace WebProjectExam.Services.UserServices
             return user;
         }
 
+        /// <summary>
+        /// Returns the user role of the given user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public IdentityRole FindUserRole(UserVM user)
         {
             var roleId = _context.UserRoles.FirstOrDefault(x => x.UserId == user.Id);
+            if (roleId != null)
+            {
+                var role = _context.Roles.Find(roleId.RoleId);
+                return role;
 
-            var role = _context.Roles.Find(roleId.RoleId);
+            }
 
-            return role;
+            return null;
         }
 
+        /// <summary>
+        /// Returns the role by Id
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public IdentityRole FindUserRoleById(string Id)
         {
             var roleId = _context.UserRoles.FirstOrDefault(x => x.UserId == Id);
+            if (roleId != null)
+            {
+                var role = _context.Roles.Find(roleId.RoleId);
 
-            var role = _context.Roles.Find(roleId.RoleId);
+                return role;
+            }
 
-            return role;
+            return new IdentityRole();
         }
 
-
+        /// <summary>
+        /// Mapping
+        /// </summary>
+        /// <returns></returns>
         private static Expression<Func<IdentityRole, EditRolesVM>> MapToEditRolesVM()
         {
             return x => new EditRolesVM()
@@ -189,6 +267,10 @@ namespace WebProjectExam.Services.UserServices
             };
         }
 
+        /// <summary>
+        /// Mapping
+        /// </summary>
+        /// <returns></returns>
         private static Expression<Func<User, UserVM>> MapToEditUserVM()
         {
             return x => new UserVM()

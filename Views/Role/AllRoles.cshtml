@@ -1,4 +1,5 @@
-﻿@model WebProjectExam.Models.ViewModels.UserVMs.ShowAllUsersVM
+﻿@model WebProjectExam.Models.ViewModels.RoleVMs.ShowAllRolesVm
+
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -6,23 +7,15 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Username</th>
-            <th>E-mail</th>
-            <th>Role</th>
+            <th>Name</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Users)
+        @foreach (var item in Model.Roles)
         {
             <tr>
                 <td>
-                    @item.Username
-                </td>
-                <td>
-                    @item.EmailAddress
-                </td>
-                <td>
-                    @item.Role
+                    @item.Name
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -32,3 +25,4 @@
         }
     </tbody>
 </table>
+

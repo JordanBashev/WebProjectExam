@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using WebProjectExam.Models.Entities;
 using Microsoft.AspNetCore.Identity;
+using WebProjectExam.Models.ViewModels.RoleVMs;
 
 namespace WebProjectExam.Database
 {
@@ -34,6 +35,9 @@ namespace WebProjectExam.Database
             optionsBuilder.UseSqlServer(Configuration["connectionString:DefaultConnection"]);
                                       
         }
+
+
+        public DbSet<WebProjectExam.Models.ViewModels.RoleVMs.RoleVm> RoleVm { get; set; }
          
     }
 }
