@@ -25,7 +25,7 @@ namespace WebProjectExam.Controllers
             var shoemodel = new ShoeVM();
 
             shoemodel.Shoes = shoeService.GetAllShoes();
-            return this.View(shoemodel);
+            return View("Index" , shoemodel);
         }
         [HttpGet]
         public IActionResult Edit(int Id)
