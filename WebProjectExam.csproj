@@ -23,8 +23,6 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.11" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.11" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.11">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -50,7 +48,6 @@
   <ItemGroup>
     <Folder Include="Services\OrderSevices\" />
     <Folder Include="Services\ShoeServices\" />
-    <Folder Include="Models\ViewModels\" />
     <Folder Include="Views\Shoes\" />
   </ItemGroup>
 </Project>

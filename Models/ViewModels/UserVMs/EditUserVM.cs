@@ -15,7 +15,7 @@ namespace WebProjectExam.Models.ViewModels.UserVMs
 
         public string PhoneNumber { get; set; }
 
-        public string Role { get; set; }
+        public IdentityRole Role { get; set; }
 
         public IEnumerable<EditRolesVM> Roles { get; set; }
 

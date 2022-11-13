@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using WebProjectExam.Database;
 using WebProjectExam.Models.Entities;
 using WebProjectExam.Services.OrderSevices;
+using WebProjectExam.Services.RoleServices;
 using WebProjectExam.Services.ShoeServices;
 using WebProjectExam.Services.UserServices;
 
@@ -56,6 +57,7 @@ namespace WebProjectExam
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IOrderServices ,OrderServices>();
             services.AddScoped<IShoeServices, ShoeServices>();
+            services.AddScoped<IRoleServices, RoleServices>();
         }
 
 
