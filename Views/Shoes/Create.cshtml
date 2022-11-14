@@ -1,0 +1,15 @@
+﻿@model WebProjectExam.Models.ViewModels.ShoeVM
+
+
+<div class="text-center">
+     <h1 class="row">ADD NEW SHOE </h1>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" asp-controller="Shoe" method="post">
+            <label class="control-label">Colour</label>
+            <input type="color" class="form-control" />
+        </form>
+    </div>
+</div>
