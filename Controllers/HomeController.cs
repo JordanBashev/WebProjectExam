@@ -37,7 +37,7 @@ namespace WebProjectExam.Controllers
                 _userServices.SeedRoles();
                 _userServices.SeedAdmin();
                 _orderServices.seedOrders();
-                _shoeServices.seedShoes();
+                
                 counter++;
             }
             return View();

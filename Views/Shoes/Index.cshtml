@@ -4,7 +4,7 @@
     <h1>Shoes</h1>
 </div>
 <p>
-    <a asp-action="AddShoe" class="btn btn-primary mx-3">Add New Shoe</a>
+    <a  asp-action="Create" class="btn btn-primary mx-3">Add New Shoe</a>
 </p>
 
 <table class="table table-striped table-hover table- table-bordered bg-white">
@@ -28,7 +28,7 @@
             <td>@Model.Colour</td>
         
             <td>
-                <a asp-action="EditFlight" asp-route-id="@Model.Id">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
                 <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
             </td>
         </tr>
