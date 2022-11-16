@@ -32,6 +32,30 @@ namespace WebProjectExam.Services.ShoeServices
             }
         }
 
+        public void StreamToRead(EditShoeVM shoemodel)
+        {
+            string fileName = $"{shoemodel.Id}.png";
+            //Create an object of FileInfo for specified path            
+            FileInfo fi = new FileInfo(fileName);
+
+            //Open a file for Read\Write
+            FileStream fs = fi.Open(FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read);
+
+            //Create an object of StreamReader by passing FileStream object on which it needs to operates on
+            StreamReader sr = new StreamReader(fs);
+
+            //Use the ReadToEnd method to read all the content from file
+            string fileContent = sr.ReadToEnd();
+
+            if (fileName == $"{shoemodel.Id}.png")
+            {
+                File.Delete(fileName);
+            }
+            //Close the StreamReader object after operation
+            sr.Close();
+            fs.Close();
+        }
+
         public void Edit(EditShoeVM shoemodel)
         {
             if(shoemodel.Id == 0)
@@ -56,18 +80,19 @@ namespace WebProjectExam.Services.ShoeServices
                     }
 
                 };
-                
-                
+               
                 _context.Shoes.Add(shoeToCreate);
               
             }
             else
             {
                 var ShoeToEdit = _context.Shoes.FirstOrDefault(s => s.Id == shoemodel.Id);
-
                 var shoePriceToEdit = _context.Prices.FirstOrDefault(p => p.Shoe_Id == shoemodel.Id);
                 var shoeBrandToEdit = _context.Brands.FirstOrDefault(p => p.Shoe_Id == shoemodel.Id);
-
+                var shoeImageToEdit = _context.Image.FirstOrDefault(I => I.Shoe_Id == shoemodel.Id);
+                StreamToRead(shoemodel);
+                var path =  Stream(shoemodel.uri);
+                
                 if (ShoeToEdit != null)
                 {
 
@@ -75,7 +100,9 @@ namespace WebProjectExam.Services.ShoeServices
                     ShoeToEdit.Colour = shoemodel.Colour;
                     shoePriceToEdit.price = shoemodel.Price;
                     shoeBrandToEdit.Name = shoemodel.Brand;
+                    shoeImageToEdit.uri = path;
 
+                    _context.Image.Update(shoeImageToEdit);
                     _context.Shoes.Update(ShoeToEdit);
                     _context.Prices.Update(shoePriceToEdit);
                     _context.Brands.Update(shoeBrandToEdit);
@@ -102,6 +129,7 @@ namespace WebProjectExam.Services.ShoeServices
 
             return shoes;
         }
+
         public Image GetImageByShoe(ShoeVM shoe)
         {
             var image = _context.Image.FirstOrDefault(p => p.Shoe_Id == shoe.Id);
@@ -132,7 +160,7 @@ namespace WebProjectExam.Services.ShoeServices
         {
             try
             {
-                request = (HttpWebRequest) WebRequest.Create(link);
+                request = (HttpWebRequest)WebRequest.Create(link);
                 request.Timeout = 1000;
                 request.AllowWriteStreamBuffering = false;
                 response = (HttpWebResponse)request.GetResponse();
