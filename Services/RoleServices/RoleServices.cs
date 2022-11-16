@@ -47,7 +47,7 @@ namespace WebProjectExam.Services.RoleServices
         }
         public IEnumerable<RoleVm> GetAllRoles()
         {
-            var allRoles = _context.Roles.Select(MapToEditRolesVM()).ToList();
+            var allRoles = _context.Roles.Select(MapToRolesVM()).ToList();
 
             return allRoles;
         }
@@ -64,7 +64,7 @@ namespace WebProjectExam.Services.RoleServices
             return null;
         }
 
-        private static Expression<Func<IdentityRole, RoleVm>> MapToEditRolesVM()
+        private static Expression<Func<IdentityRole, RoleVm>> MapToRolesVM()
         {
             return x => new RoleVm()
             {

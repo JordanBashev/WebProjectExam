@@ -86,7 +86,6 @@ namespace WebProjectExam.Services.ShoeServices
                 Size = shoemodel.Size,
                 Price = shoemodel.Price,
                 Colour = shoemodel.Colour
-
             };
             _context.Shoes.Add(shoeToCreate);
             _context.SaveChanges();
