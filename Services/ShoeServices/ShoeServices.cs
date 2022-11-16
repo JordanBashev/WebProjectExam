@@ -79,22 +79,16 @@ namespace WebProjectExam.Services.ShoeServices
             return shoes;
         }
 
-        public void seedShoes()
+        public void Create(ShoeVM shoemodel)
         {
-            Shoe shoe = new Shoe
+            var shoeToCreate = new Shoe()
             {
-                Price = 69.420M ,
-                Colour = "Magenta",
-                Size = 43.5D
+                Size = shoemodel.Size,
+                Price = shoemodel.Price,
+                Colour = shoemodel.Colour
             };
-
-            if(!_context.Shoes.Any(x => x.Colour == shoe.Colour))
-            {
-                _context.Shoes.Add(shoe);
-                _context.SaveChanges();
-            }
-
+            _context.Shoes.Add(shoeToCreate);
+            _context.SaveChanges();
         }
-
     }
 }

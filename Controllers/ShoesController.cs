@@ -32,8 +32,16 @@ namespace WebProjectExam.Controllers
         {
             return View();
         }
+
         [HttpPost]
-        public IActionResult Edit()
+        public IActionResult Create(ShoeVM shoemodel)
+        {
+            return View("Index" , "Create");
+        }
+
+
+        [HttpGet]
+        public IActionResult Create()
         {
             return View();
         }
