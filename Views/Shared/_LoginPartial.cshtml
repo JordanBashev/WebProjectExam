@@ -12,7 +12,9 @@
         {
             if (User.IsInRole("Admin"))
             {
-
+                    // <p>@UserManager.GetUserId(User)</p>
+                    //get current loged user ID 
+               
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
@@ -32,12 +34,22 @@
                     <a class="nav-link text-dark" asp-area="" asp-controller="Tag" asp-action="AllTags">Tags</a>
                 </li>
             }
-                if (User.IsInRole("Customer"))
-                {
-                    <li class="nav-item">
-                         <a class="nav-link text-dark" asp-area="" asp-controller="Shoes" asp-action="ShowCustomerShoes">Shoes</a>
-                    </li>
-                }
+            if (User.IsInRole("Customer"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Shoes" asp-action="ShowCustomerShoes">Shoes</a>
+                </li>
+            }
+            if (User.IsInRole("Worker"))
+            {
+
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Shoes" asp-action="ShowShoes">Shoes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Tag" asp-action="AllTags">Tags</a>
+                </li>
+            }
         }
         <li class="nav-item float-lg-right">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
@@ -52,7 +64,6 @@
     else
     {
         <ul>
-
         </ul>
         <li class="nav-item">
             <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>

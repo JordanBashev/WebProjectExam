@@ -29,6 +29,7 @@ namespace WebProjectExam.Controllers
             {
                 shoe.Price = shoeService.GetPriceByShoe(shoe);
                 shoe.Brand = shoeService.GetBrandByShoe(shoe);
+                shoe.uri = shoeService.GetImageByShoe(shoe).uri;
             }
             return View("Index" , shoemodel);
 

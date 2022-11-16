@@ -12,6 +12,7 @@ namespace WebProjectExam.Models.ViewModels
         public Price Price { get; set; }
         public string Colour { get; set; }
         public double Size { get; set; }
+        public string uri { get; set; }
 
         public List<ShoeVM> Shoes { get; set; }
     }

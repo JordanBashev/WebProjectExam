@@ -51,5 +51,9 @@
     <Folder Include="Services\OrderSevices\" />
     <Folder Include="Services\ShoeServices\" />
     <Folder Include="Views\Shoes\" />
+    <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\Images\" />
   </ItemGroup>
 </Project>

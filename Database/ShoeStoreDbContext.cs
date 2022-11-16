@@ -28,7 +28,7 @@ namespace WebProjectExam.Database
         public DbSet<Order> orders { get; set; }
         public DbSet<Shoe> Shoes { get; set; }
         public DbSet<Brand> Brands { get; set; }
-
+        public DbSet<Image> Image { get; set; }
         public DbSet<Price> Prices { get; set; }
         public DbSet<ShoeToTag> ShoeToTags { get; set; }
 

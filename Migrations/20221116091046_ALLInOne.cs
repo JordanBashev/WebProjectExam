@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebProjectExam.Migrations
 {
-    public partial class Initial : Migration
+    public partial class ALLInOne : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -221,6 +221,26 @@ namespace WebProjectExam.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Image",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    uri = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Shoe_Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Image", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Image_Shoes_Shoe_Id",
+                        column: x => x.Shoe_Id,
+                        principalTable: "Shoes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Prices",
                 columns: table => new
                 {
@@ -236,6 +256,32 @@ namespace WebProjectExam.Migrations
                         name: "FK_Prices_Shoes_Shoe_Id",
                         column: x => x.Shoe_Id,
                         principalTable: "Shoes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShoeToTags",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShoeId = table.Column<int>(type: "int", nullable: false),
+                    TagId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoeToTags", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoeToTags_Shoes_ShoeId",
+                        column: x => x.ShoeId,
+                        principalTable: "Shoes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ShoeToTags_Tags_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -282,7 +328,14 @@ namespace WebProjectExam.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Brands_Shoe_Id",
                 table: "Brands",
-                column: "Shoe_Id");
+                column: "Shoe_Id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Image_Shoe_Id",
+                table: "Image",
+                column: "Shoe_Id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_orders_user_Id",
@@ -292,7 +345,18 @@ namespace WebProjectExam.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Prices_Shoe_Id",
                 table: "Prices",
-                column: "Shoe_Id");
+                column: "Shoe_Id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoeToTags_ShoeId",
+                table: "ShoeToTags",
+                column: "ShoeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoeToTags_TagId",
+                table: "ShoeToTags",
+                column: "TagId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -316,13 +380,16 @@ namespace WebProjectExam.Migrations
                 name: "Brands");
 
             migrationBuilder.DropTable(
+                name: "Image");
+
+            migrationBuilder.DropTable(
                 name: "orders");
 
             migrationBuilder.DropTable(
                 name: "Prices");
 
             migrationBuilder.DropTable(
-                name: "Tags");
+                name: "ShoeToTags");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -332,6 +399,9 @@ namespace WebProjectExam.Migrations
 
             migrationBuilder.DropTable(
                 name: "Shoes");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
         }
     }
 }
