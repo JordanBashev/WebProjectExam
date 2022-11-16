@@ -1,15 +1,38 @@
-﻿@model WebProjectExam.Models.ViewModels.ShoeVM
+@model WebProjectExam.Models.ViewModels.EditShoeVM
 
+@{
+    ViewData["Title"] = "Create";
+}
 
-<div class="text-center">
-     <h1 class="row">ADD NEW SHOE </h1>
-</div>
+<h1>Create</h1>
 
+<h4>ShoeVM</h4>
+<hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" asp-controller="Shoe" method="post">
-            <label class="control-label">Colour</label>
-            <input type="color" class="form-control" />
+        <form method="post" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Colour" class="control-label"></label>
+                <input asp-for="Colour" class="form-control" />
+                <span asp-validation-for="Colour" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Size" class="control-label"></label>
+                <input asp-for="Size" class="form-control" />
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
         </form>
     </div>
 </div>
+
+<div>
+    <a asp-action="ShowShoes">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

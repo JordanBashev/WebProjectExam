@@ -26,35 +26,47 @@ namespace WebProjectExam.Services.ShoeServices
             }
         }
 
-        public void Edit(ShoeVM shoemodel)
+        public void Edit(EditShoeVM shoemodel)
         {
-            if(shoemodel.Id != 0)
+            if(shoemodel.Id == 0)
             {
                 var shoeToCreate = new Shoe()
                 {
                     Size = shoemodel.Size,
-                    Price = shoemodel.Price,
+                    Price = new Price {
+                        price = shoemodel.Price,
+                        Shoe_Id = shoemodel.Id
+                    },
+                    Brand = new Brand {
+                        Name = shoemodel.Brand,
+                        Shoe_Id = shoemodel.Id},
+
                     Colour = shoemodel.Colour
 
                 };
-                _context.Shoes.Add(shoeToCreate);
                 
+                
+                _context.Shoes.Add(shoeToCreate);
+              
             }
             else
             {
                 var ShoeToEdit = _context.Shoes.FirstOrDefault(s => s.Id == shoemodel.Id);
 
-                var shoe = new Shoe()
-                {
-                    Size = shoemodel.Size,
-                    Price = shoemodel.Price,
-                    Colour = shoemodel.Colour
-                };
+                var shoePriceToEdit = _context.Prices.FirstOrDefault(p => p.Shoe_Id == shoemodel.Id);
+                var shoeBrandToEdit = _context.Brands.FirstOrDefault(p => p.Shoe_Id == shoemodel.Id);
 
-                if(ShoeToEdit != null)
+                if (ShoeToEdit != null)
                 {
-                    ShoeToEdit = shoe;
+
+                    ShoeToEdit.Size = shoemodel.Size ;
+                    ShoeToEdit.Colour = shoemodel.Colour;
+                    shoePriceToEdit.price = shoemodel.Price;
+                    shoeBrandToEdit.Name = shoemodel.Brand;
+
                     _context.Shoes.Update(ShoeToEdit);
+                    _context.Prices.Update(shoePriceToEdit);
+                    _context.Brands.Update(shoeBrandToEdit);
                 }
             }
             _context.SaveChanges();
@@ -65,7 +77,7 @@ namespace WebProjectExam.Services.ShoeServices
             return x => new ShoeVM()
             {
                 Id = x.Id,
-                Price = x.Price,
+                
                 Size = x.Size,
                 Colour = x.Colour
             };
@@ -79,16 +91,21 @@ namespace WebProjectExam.Services.ShoeServices
             return shoes;
         }
 
-        public void Create(ShoeVM shoemodel)
+        public Price GetPriceByShoe(ShoeVM shoe)
         {
-            var shoeToCreate = new Shoe()
-            {
-                Size = shoemodel.Size,
-                Price = shoemodel.Price,
-                Colour = shoemodel.Colour
-            };
-            _context.Shoes.Add(shoeToCreate);
-            _context.SaveChanges();
+
+
+            var price = _context.Prices.FirstOrDefault(p  => p.Shoe_Id == shoe.Id);
+            return price;
         }
+
+        public Brand GetBrandByShoe(ShoeVM shoe)
+        {
+            var brand = _context.Brands.FirstOrDefault(b => b.Shoe_Id == shoe.Id);
+            return brand;
+
+
+        }
+
     }
 }

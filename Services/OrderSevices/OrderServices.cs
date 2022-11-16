@@ -23,21 +23,6 @@ namespace WebProjectExam.Services.OrderSevices
             throw new NotImplementedException();
         }
 
-        public void seedOrders()
-        {
-            var finduserbyname = _context.Users.FirstOrDefault(x => x.UserName == "admin");
-
-            Order newOrder = new Order
-            {
-                user_Id = finduserbyname.Id
-            };
-            if(!_context.orders.Any(x => x.user_Id == newOrder.user_Id))
-            {
-                _context.orders.Add(newOrder);
-                _context.SaveChanges();
-            }
-
-        }
     }
 }
 

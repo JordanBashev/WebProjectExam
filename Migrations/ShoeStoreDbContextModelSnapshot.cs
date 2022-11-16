@@ -194,6 +194,27 @@ namespace WebProjectExam.Migrations
                     b.ToTable("orders");
                 });
 
+            modelBuilder.Entity("WebProjectExam.Models.Entities.Price", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Shoe_Id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Shoe_Id");
+
+                    b.ToTable("Prices");
+                });
+
             modelBuilder.Entity("WebProjectExam.Models.Entities.Shoe", b =>
                 {
                     b.Property<int>("Id")
@@ -205,9 +226,6 @@ namespace WebProjectExam.Migrations
                     b.Property<string>("Colour")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<double>("Size")
                         .HasColumnType("float");
 
@@ -215,6 +233,7 @@ namespace WebProjectExam.Migrations
 
                     b.ToTable("Shoes");
                 });
+
 
             modelBuilder.Entity("WebProjectExam.Models.Entities.ShoeToTag", b =>
                 {
@@ -238,6 +257,7 @@ namespace WebProjectExam.Migrations
 
                     b.ToTable("ShoeToTags");
                 });
+
 
             modelBuilder.Entity("WebProjectExam.Models.Entities.Tag", b =>
                 {
@@ -407,6 +427,13 @@ namespace WebProjectExam.Migrations
                     b.Navigation("User");
                 });
 
+
+            modelBuilder.Entity("WebProjectExam.Models.Entities.Price", b =>
+                {
+                    b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
+                        .WithMany()
+                        .HasForeignKey("Shoe_Id")
+
             modelBuilder.Entity("WebProjectExam.Models.Entities.ShoeToTag", b =>
                 {
                     b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
@@ -418,11 +445,11 @@ namespace WebProjectExam.Migrations
                     b.HasOne("WebProjectExam.Models.Entities.Tag", "Tag")
                         .WithMany()
                         .HasForeignKey("TagId")
+
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Shoe");
-
                     b.Navigation("Tag");
                 });
 #pragma warning restore 612, 618
