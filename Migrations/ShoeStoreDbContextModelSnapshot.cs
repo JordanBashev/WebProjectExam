@@ -432,27 +432,28 @@ namespace WebProjectExam.Migrations
                 {
                     b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
                         .WithMany()
-                        .HasForeignKey("Shoe_Id")
+                        .HasForeignKey("Shoe_Id");
 
-            modelBuilder.Entity("WebProjectExam.Models.Entities.ShoeToTag", b =>
-                {
-                    b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
-                        .WithMany()
-                        .HasForeignKey("ShoeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    modelBuilder.Entity("WebProjectExam.Models.Entities.ShoeToTag", b =>
+                        {
+                            b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
+                                .WithMany()
+                                .HasForeignKey("ShoeId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
 
-                    b.HasOne("WebProjectExam.Models.Entities.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId")
+                            b.HasOne("WebProjectExam.Models.Entities.Tag", "Tag")
+                                .WithMany()
+                                .HasForeignKey("TagId")
 
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
 
-                    b.Navigation("Shoe");
-                    b.Navigation("Tag");
-                });
+                            b.Navigation("Shoe");
+                            b.Navigation("Tag");
+                        });
 #pragma warning restore 612, 618
+                });
         }
     }
 }

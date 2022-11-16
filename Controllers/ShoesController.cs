@@ -33,6 +33,26 @@ namespace WebProjectExam.Controllers
             return View("Index" , shoemodel);
 
         }
+        public IActionResult ShowCustomerShoes(ShoeVM shoemodel)
+        {
+
+            shoemodel.Shoes = shoeService.GetAllShoes();
+            foreach (var shoe in shoemodel.Shoes)
+            {
+                shoe.Price = shoeService.GetPriceByShoe(shoe);
+                shoe.Brand = shoeService.GetBrandByShoe(shoe);
+            }
+            return View("CustomerIndex", shoemodel);
+
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditShoeVM shoe)
+        {
+            shoeService.Edit(shoe);
+            return RedirectToAction(nameof(ShowShoes)); 
+        }
+
         [HttpGet]
         public IActionResult Edit(int Id)
         {
