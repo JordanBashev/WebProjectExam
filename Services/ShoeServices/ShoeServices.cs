@@ -131,24 +131,17 @@ namespace WebProjectExam.Services.ShoeServices
         public string Stream(string link)
         {
             try
-
             {
-
-                request = (HttpWebRequest)WebRequest.Create(link);
-
+                request = (HttpWebRequest) WebRequest.Create(link);
                 request.Timeout = 1000;
-
                 request.AllowWriteStreamBuffering = false;
-
                 response = (HttpWebResponse)request.GetResponse();
 
                 Stream s = response.GetResponseStream();
-
-
-
+                
                 //Write to disk
-
-                FileStream fs = new FileStream($"../WebProjectExam/wwwroot/Images/image{GetImagesCount()}.png" ,FileMode.Create, FileAccess.ReadWrite);
+                string fileName = $"{GetImagesCount()}.png";
+                FileStream fs = new FileStream($"./wwwroot/Images/{fileName}" ,FileMode.Create, FileAccess.ReadWrite);
 
                 byte[] read = new byte[256];
 
@@ -171,7 +164,8 @@ namespace WebProjectExam.Services.ShoeServices
                 s.Close();
 
                 response.Close();
-                return path;
+
+                return fileName;
             }
 
             catch (System.Net.WebException)
