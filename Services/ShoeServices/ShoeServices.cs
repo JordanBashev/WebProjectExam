@@ -88,8 +88,12 @@ namespace WebProjectExam.Services.ShoeServices
                 Size = 43.5D
             };
 
-            _context.Shoes.Add(shoe);
-            _context.SaveChanges();
+            if(!_context.Shoes.Any(x => x.Colour == shoe.Colour))
+            {
+                _context.Shoes.Add(shoe);
+                _context.SaveChanges();
+            }
+
         }
 
     }

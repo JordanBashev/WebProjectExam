@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using WebProjectExam.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using WebProjectExam.Models.ViewModels.RoleVMs;
+using WebProjectExam.Models.ViewModels.TagVMs;
 
 namespace WebProjectExam.Database
 {
@@ -28,6 +29,7 @@ namespace WebProjectExam.Database
         public DbSet<Order> orders { get; set; }
         public DbSet<Shoe> Shoes { get; set; }
         public DbSet<Brand> Brands { get; set; }
+        public DbSet<ShoeToTag> ShoeToTags { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -37,7 +39,7 @@ namespace WebProjectExam.Database
         }
 
 
-        public DbSet<WebProjectExam.Models.ViewModels.RoleVMs.RoleVm> RoleVm { get; set; }
-         
+        public DbSet<WebProjectExam.Models.ViewModels.TagVMs.TagVM> TagVM { get; set; }
+      
     }
 }

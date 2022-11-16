@@ -31,9 +31,12 @@ namespace WebProjectExam.Services.OrderSevices
             {
                 user_Id = finduserbyname.Id
             };
+            if(!_context.orders.Any(x => x.user_Id == newOrder.user_Id))
+            {
+                _context.orders.Add(newOrder);
+                _context.SaveChanges();
+            }
 
-            _context.orders.Add(newOrder);
-            _context.SaveChanges();
         }
     }
 }
