@@ -36,8 +36,6 @@ namespace WebProjectExam.Controllers
             {
                 _userServices.SeedRoles();
                 _userServices.SeedAdmin();
-                _orderServices.seedOrders();
-                
                 counter++;
             }
             return View();

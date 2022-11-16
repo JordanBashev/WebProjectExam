@@ -7,9 +7,11 @@ namespace WebProjectExam.Services.ShoeServices
 {
     public interface IShoeServices
     {
-        public void Create(ShoeVM shoemodel);
-        public void Edit(ShoeVM shoemodel);
+        
+        public void Edit(EditShoeVM shoemodel);
         public void Delete(int Id);
+        public Brand GetBrandByShoe(ShoeVM shoe);
+        public Price GetPriceByShoe(ShoeVM shoe);
         public List<ShoeVM> GetAllShoes();
     }
 }

@@ -30,6 +30,7 @@
 
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
 
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.10" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +45,7 @@
     <None Remove="Microsoft.AspNetCore.Identity.UI" />
     <None Remove="Models\ViewModels\" />
     <None Remove="Views\Shoes\" />
+    <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\OrderSevices\" />

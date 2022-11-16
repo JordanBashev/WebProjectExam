@@ -18,14 +18,20 @@ namespace WebProjectExam.Controllers
         public ShoesController(IShoeServices shoeServices)
         {
             this.shoeService = shoeServices;
+
         }
         // GET: /<controller>/
-        public IActionResult ShowShoes()
+        public IActionResult ShowShoes(ShoeVM shoemodel)
         {
-            var shoemodel = new ShoeVM();
-
+            
             shoemodel.Shoes = shoeService.GetAllShoes();
+            foreach(var shoe in shoemodel.Shoes)
+            {
+                shoe.Price = shoeService.GetPriceByShoe(shoe);
+                shoe.Brand = shoeService.GetBrandByShoe(shoe);
+            }
             return View("Index" , shoemodel);
+
         }
         [HttpGet]
         public IActionResult Edit(int Id)
@@ -34,9 +40,14 @@ namespace WebProjectExam.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(ShoeVM shoemodel)
+        public IActionResult Create(EditShoeVM shoemodel)
         {
-            return View("Index" , "Create");
+            if (ModelState.IsValid)
+            {
+             shoeService.Edit(shoemodel);
+            }
+            return RedirectToAction(nameof(ShowShoes));
+
         }
 
 
@@ -49,8 +60,8 @@ namespace WebProjectExam.Controllers
         [HttpGet]
         public IActionResult Delete(int Id)
         {
-
-            return View();
+            shoeService.Delete(Id);
+            return RedirectToAction(nameof(ShowShoes));
         }
     }
 }
