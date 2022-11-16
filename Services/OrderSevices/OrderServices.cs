@@ -23,7 +23,6 @@ namespace WebProjectExam.Services.OrderSevices
             throw new NotImplementedException();
         }
 
-      
     }
 }
 

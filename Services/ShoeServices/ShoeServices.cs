@@ -93,6 +93,8 @@ namespace WebProjectExam.Services.ShoeServices
 
         public Price GetPriceByShoe(ShoeVM shoe)
         {
+
+
             var price = _context.Prices.FirstOrDefault(p  => p.Shoe_Id == shoe.Id);
             return price;
         }
@@ -101,6 +103,8 @@ namespace WebProjectExam.Services.ShoeServices
         {
             var brand = _context.Brands.FirstOrDefault(b => b.Shoe_Id == shoe.Id);
             return brand;
+
+
         }
 
     }
