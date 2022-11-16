@@ -171,9 +171,32 @@ namespace WebProjectExam.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Shoe_Id");
+                    b.HasIndex("Shoe_Id")
+                        .IsUnique();
 
                     b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("WebProjectExam.Models.Entities.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Shoe_Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("uri")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Shoe_Id")
+                        .IsUnique();
+
+                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("WebProjectExam.Models.Entities.Order", b =>
@@ -210,7 +233,8 @@ namespace WebProjectExam.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Shoe_Id");
+                    b.HasIndex("Shoe_Id")
+                        .IsUnique();
 
                     b.ToTable("Prices");
                 });
@@ -234,7 +258,6 @@ namespace WebProjectExam.Migrations
                     b.ToTable("Shoes");
                 });
 
-
             modelBuilder.Entity("WebProjectExam.Models.Entities.ShoeToTag", b =>
                 {
                     b.Property<int>("Id")
@@ -257,7 +280,6 @@ namespace WebProjectExam.Migrations
 
                     b.ToTable("ShoeToTags");
                 });
-
 
             modelBuilder.Entity("WebProjectExam.Models.Entities.Tag", b =>
                 {
@@ -343,19 +365,6 @@ namespace WebProjectExam.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("WebProjectExam.Models.ViewModels.RoleVMs.RoleVm", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RoleVm");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -410,8 +419,19 @@ namespace WebProjectExam.Migrations
             modelBuilder.Entity("WebProjectExam.Models.Entities.Brand", b =>
                 {
                     b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
-                        .WithMany()
-                        .HasForeignKey("Shoe_Id")
+                        .WithOne("Brand")
+                        .HasForeignKey("WebProjectExam.Models.Entities.Brand", "Shoe_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shoe");
+                });
+
+            modelBuilder.Entity("WebProjectExam.Models.Entities.Image", b =>
+                {
+                    b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
+                        .WithOne("uri")
+                        .HasForeignKey("WebProjectExam.Models.Entities.Image", "Shoe_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -427,33 +447,45 @@ namespace WebProjectExam.Migrations
                     b.Navigation("User");
                 });
 
-
             modelBuilder.Entity("WebProjectExam.Models.Entities.Price", b =>
                 {
                     b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
-                        .WithMany()
-                        .HasForeignKey("Shoe_Id");
+                        .WithOne("Price")
+                        .HasForeignKey("WebProjectExam.Models.Entities.Price", "Shoe_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    modelBuilder.Entity("WebProjectExam.Models.Entities.ShoeToTag", b =>
-                        {
-                            b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
-                                .WithMany()
-                                .HasForeignKey("ShoeId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b.HasOne("WebProjectExam.Models.Entities.Tag", "Tag")
-                                .WithMany()
-                                .HasForeignKey("TagId")
-
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b.Navigation("Shoe");
-                            b.Navigation("Tag");
-                        });
-#pragma warning restore 612, 618
+                    b.Navigation("Shoe");
                 });
+
+            modelBuilder.Entity("WebProjectExam.Models.Entities.ShoeToTag", b =>
+                {
+                    b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
+                        .WithMany()
+                        .HasForeignKey("ShoeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebProjectExam.Models.Entities.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shoe");
+
+                    b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("WebProjectExam.Models.Entities.Shoe", b =>
+                {
+                    b.Navigation("Brand");
+
+                    b.Navigation("Price");
+
+                    b.Navigation("uri");
+                });
+#pragma warning restore 612, 618
         }
     }
 }

@@ -8,8 +8,8 @@ namespace WebProjectExam.Models.Entities
         public Brand Brand { get; set; }
         public string Colour { get; set; }
         public double  Size { get; set; }
+        public Image uri { get; set; }
 
-        
     }
 }
 

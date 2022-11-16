@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using WebProjectExam.Database;
 using WebProjectExam.Models.Entities;
 using WebProjectExam.Models.ViewModels;
+using WebProjectExam.Models.ViewModels.UserVMs;
 
 namespace WebProjectExam.Services.ShoeServices
 {
     public class ShoeServices : IShoeServices
     {
+        HttpWebRequest request;
+
+        HttpWebResponse response = null;
         private readonly ShoeStoreDbContext _context;
         public ShoeServices(ShoeStoreDbContext context)
         {
@@ -30,6 +36,7 @@ namespace WebProjectExam.Services.ShoeServices
         {
             if(shoemodel.Id == 0)
             {
+                var path = Stream(shoemodel.uri);
                 var shoeToCreate = new Shoe()
                 {
                     Size = shoemodel.Size,
@@ -39,9 +46,14 @@ namespace WebProjectExam.Services.ShoeServices
                     },
                     Brand = new Brand {
                         Name = shoemodel.Brand,
-                        Shoe_Id = shoemodel.Id},
+                        Shoe_Id = shoemodel.Id },
 
-                    Colour = shoemodel.Colour
+                    Colour = shoemodel.Colour,
+                    uri = new Image
+                    {
+                        uri = path,
+                        Shoe_Id = shoemodel.Id
+                    }
 
                 };
                 
@@ -90,6 +102,11 @@ namespace WebProjectExam.Services.ShoeServices
 
             return shoes;
         }
+        public Image GetImageByShoe(ShoeVM shoe)
+        {
+            var image = _context.Image.FirstOrDefault(p => p.Shoe_Id == shoe.Id);
+            return image;
+        }
 
         public Price GetPriceByShoe(ShoeVM shoe)
         {
@@ -103,9 +120,69 @@ namespace WebProjectExam.Services.ShoeServices
         {
             var brand = _context.Brands.FirstOrDefault(b => b.Shoe_Id == shoe.Id);
             return brand;
-
-
         }
 
+        private int GetImagesCount()
+        {
+            var count = _context.Image.Count();
+            return count;
+        }
+
+        public string Stream(string link)
+        {
+            try
+
+            {
+
+                request = (HttpWebRequest)WebRequest.Create(link);
+
+                request.Timeout = 1000;
+
+                request.AllowWriteStreamBuffering = false;
+
+                response = (HttpWebResponse)request.GetResponse();
+
+                Stream s = response.GetResponseStream();
+
+
+
+                //Write to disk
+
+                FileStream fs = new FileStream($"../WebProjectExam/wwwroot/Images/image{GetImagesCount()}.png" ,FileMode.Create, FileAccess.ReadWrite);
+
+                byte[] read = new byte[256];
+
+                int count = s.Read(read, 0, read.Length);
+
+                while (count > 0)
+
+                {
+
+                    fs.Write(read, 0, count);
+
+                    count = s.Read(read, 0, read.Length);
+
+                }
+                string path = fs.Name;
+                //Close everything
+
+                fs.Close();
+
+                s.Close();
+
+                response.Close();
+                return path;
+            }
+
+            catch (System.Net.WebException)
+
+            {
+                if (response != null)
+
+                    response.Close();
+                return null;
+            }
+            
+        }
     }
 }
