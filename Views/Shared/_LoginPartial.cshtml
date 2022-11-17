@@ -7,14 +7,14 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-            
+
         if (User.Identity.IsAuthenticated)
         {
             if (User.IsInRole("Admin"))
             {
-                    // <p>@UserManager.GetUserId(User)</p>
-                    //get current loged user ID 
-               
+                // <p>@UserManager.GetUserId(User)</p>
+                //get current loged user ID
+
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
@@ -39,6 +39,9 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Shoes" asp-action="ShowCustomerShoes">Shoes</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="AllUserOrders">Cart</a>
+                </li>
             }
             if (User.IsInRole("Worker"))
             {
@@ -48,6 +51,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Tag" asp-action="AllTags">Tags</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="AllOrders">Active Orders</a>
                 </li>
             }
         }

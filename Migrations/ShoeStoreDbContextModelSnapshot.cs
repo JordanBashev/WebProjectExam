@@ -207,10 +207,19 @@ namespace WebProjectExam.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("shoe_Id")
+                        .HasColumnType("int");
+
                     b.Property<string>("user_Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("shoe_Id")
+                        .IsUnique();
 
                     b.HasIndex("user_Id");
 
@@ -253,7 +262,12 @@ namespace WebProjectExam.Migrations
                     b.Property<double>("Size")
                         .HasColumnType("float");
 
+                    b.Property<int?>("TagId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TagId");
 
                     b.ToTable("Shoes");
                 });
@@ -329,9 +343,6 @@ namespace WebProjectExam.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -440,9 +451,17 @@ namespace WebProjectExam.Migrations
 
             modelBuilder.Entity("WebProjectExam.Models.Entities.Order", b =>
                 {
+                    b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
+                        .WithOne("order")
+                        .HasForeignKey("WebProjectExam.Models.Entities.Order", "shoe_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WebProjectExam.Models.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("user_Id");
+
+                    b.Navigation("Shoe");
 
                     b.Navigation("User");
                 });
@@ -456,6 +475,15 @@ namespace WebProjectExam.Migrations
                         .IsRequired();
 
                     b.Navigation("Shoe");
+                });
+
+            modelBuilder.Entity("WebProjectExam.Models.Entities.Shoe", b =>
+                {
+                    b.HasOne("WebProjectExam.Models.Entities.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagId");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("WebProjectExam.Models.Entities.ShoeToTag", b =>
@@ -482,6 +510,8 @@ namespace WebProjectExam.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("Price");
+
+                    b.Navigation("order");
 
                     b.Navigation("uri");
                 });

@@ -1,10 +1,10 @@
 ﻿@model WebProjectExam.Models.ViewModels.ShoeVM
 
 @{
-    ViewData["Title"] = "Shoes";
+    ViewData["Title"] = "Cart";
 }
 
-<h1>Shoes</h1>
+<h1>Cart</h1>
 
 <table class="table">
     <thead>
@@ -24,15 +24,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.Size)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Shoes)
+        @foreach (var item in Model.OrderedShoes)
         {
             <tr>
                 <td>
-                    <img src="/Images/@item.uri" style="width:100px ; height:100px" />
+                    <img src="/Images/@item.uri.uri" style="width:100px ; height:100px" />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Colour)
@@ -47,11 +50,19 @@
                     @Html.DisplayFor(modelItem => item.Size)
                 </td>
                 <td>
-                    <a asp-action="AddToOrder" asp-route-id="@item.Id">Add To Cart</a>
+                    @Html.DisplayFor(modelItem => item.order.Status)
+                </td>
+                <td>
+                    <a asp-action="EditStatus" asp-route-id="@item.Id"> Edit Status </a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-
+<script type="text/javascript">
+    function formSubmited() {
+        //Form post
+        document.forms["ChangeStatus"].submit();
+    }
+</script>
