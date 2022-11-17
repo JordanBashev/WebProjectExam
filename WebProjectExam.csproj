@@ -52,6 +52,7 @@
     <Folder Include="Services\ShoeServices\" />
     <Folder Include="Views\Shoes\" />
     <Folder Include="wwwroot\Images\" />
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\Images\" />
