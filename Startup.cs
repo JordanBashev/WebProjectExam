@@ -60,6 +60,7 @@ namespace WebProjectExam
             services.AddScoped<IShoeServices, ShoeServices>();
             services.AddScoped<IRoleServices, RoleServices>();
             services.AddScoped<ITagServices, TagService>();
+            services.AddScoped<IOrderServices, OrderServices>();
         }
 
 

@@ -1,0 +1,66 @@
+﻿@model WebProjectExam.Models.ViewModels.ShoeVM
+
+@{
+    ViewData["Title"] = "Edit";
+
+    var InProgress = "InProgress";
+    var Shipping = "Shipping";
+    var Received = "Received";
+}
+
+<h1>EditStatus</h1>
+
+<h4>OrderStatus</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="EditStatus" name="ChangeStatus">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <select id="statusSelect" asp-for="Status">
+                    @if (Model.Status == "Proccesing")
+                    {
+                        <option asp-f" value="@Model.Status"> @Model.Status </option>
+                        <option value="InProgress+@Model.Id"> InProgress </option>
+                        <option value="Shipping+@Model.Id"> Shipping </option>
+                        <option value="Received+@Model.Id"> Received </option>
+                    }
+                    else
+                    {
+                        @if (Model.Status == InProgress)
+                        {
+                            <option value="@Model.Status"> @Model.Status </option>
+                            <option value="Shipping+@Model.Id"> Shipping </option>
+                            <option value="Received+@Model.Id"> Received </option>
+                        }
+                        else if (Model.Status == Shipping)
+                        {
+                            <option value="@Model.Status"> @Model.Status </option>
+                            <option value="InProgress+@Model.Id"> InProgress </option>
+                            <option value="Received+@Model.Id"> Received </option>
+                        }
+                        else
+                        {
+                            <option value="@Model.Status"> @Model.Status </option>
+                            <option value="InProgress+@Model.Id"> InProgress </option>
+                            <option value="Shipping+@Model.Id"> Shipping </option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Change Status" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="AllOrders">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

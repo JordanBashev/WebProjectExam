@@ -24,6 +24,16 @@
                 <span asp-validation-for="Size" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Tag" class="control-label"></label>
+                <select asp-for="Tag.Name" class="select">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <option value="@tag.Name">@tag.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Tag.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Brand" class="control-label"></label>
                 <input type="text" asp-for="Brand" class="form-control" />
                 <span asp-validation-for="Brand" class="text-danger"></span>

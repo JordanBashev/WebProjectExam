@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebProjectExam.Migrations
 {
-    public partial class ALLInOne : Migration
+    public partial class AllInOne : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,6 @@ namespace WebProjectExam.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    OrdersId = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -47,20 +46,6 @@ namespace WebProjectExam.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Shoes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Colour = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Size = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Shoes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -183,20 +168,22 @@ namespace WebProjectExam.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "orders",
+                name: "Shoes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    user_Id = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    TagId = table.Column<int>(type: "int", nullable: true),
+                    Colour = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Size = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_orders", x => x.Id);
+                    table.PrimaryKey("PK_Shoes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_orders_AspNetUsers_user_Id",
-                        column: x => x.user_Id,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Shoes_Tags_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tags",
                         principalColumn: "Id");
                 });
 
@@ -235,6 +222,32 @@ namespace WebProjectExam.Migrations
                     table.ForeignKey(
                         name: "FK_Image_Shoes_Shoe_Id",
                         column: x => x.Shoe_Id,
+                        principalTable: "Shoes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    user_Id = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    shoe_Id = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_orders_AspNetUsers_user_Id",
+                        column: x => x.user_Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_orders_Shoes_shoe_Id",
+                        column: x => x.shoe_Id,
                         principalTable: "Shoes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -338,6 +351,11 @@ namespace WebProjectExam.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_orders_shoe_Id",
+                table: "orders",
+                column: "shoe_Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_orders_user_Id",
                 table: "orders",
                 column: "user_Id");
@@ -347,6 +365,11 @@ namespace WebProjectExam.Migrations
                 table: "Prices",
                 column: "Shoe_Id",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shoes_TagId",
+                table: "Shoes",
+                column: "TagId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShoeToTags_ShoeId",

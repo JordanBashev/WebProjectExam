@@ -118,7 +118,7 @@ namespace WebProjectExam.Services.UserServices
             }
             else
             {
-                //Get the Id of the user to change their role
+                //Get the role of the user to change it
                 var Roles = _context.UserRoles.FirstOrDefault(x => x.UserId == checkIfExists.Id);
                 if (Roles != null)
                 {
@@ -153,6 +153,7 @@ namespace WebProjectExam.Services.UserServices
                         RoleId = getRoleId.Id,
                         UserId = checkIfExists.Id
                     };
+
                     //Set changes 
                     checkIfExists.UserName = userToEdit.Username;
                     checkIfExists.NormalizedUserName = userToEdit.Username.ToLower();
