@@ -11,7 +11,6 @@ namespace WebProjectExam.Models.Entities
         public double  Size { get; set; }
         public Image uri { get; set; }
         public Order order { get; set; }
-
     }
 }
 

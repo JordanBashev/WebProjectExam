@@ -25,6 +25,7 @@ namespace WebProjectExam.Services.ShoeServices
         public List<ShoeVM> GetAllShoes();
         public IEnumerable<TagVM> GetAllTags();
         public Shoe GetShoeById(int Id);
+        public ShoeVM GetShoeByIdAndUserIdVM(int Id, string userId);
     }
 }
 

@@ -13,6 +13,7 @@ namespace WebProjectExam.Services.CommentServices
 		public void Delete(int Id);
 		public List<Comment> ShowAllComments();
         public List<Comment> ShowAllShoeComments(int id);
+		public Comment GetCommentById(int id);
 
     }
 }

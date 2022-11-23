@@ -45,9 +45,9 @@ namespace WebProjectExam.Services.RoleServices
             }
             _context.SaveChanges();
         }
-        public IEnumerable<RoleVm> GetAllRoles()
+        public IEnumerable<IdentityRole> GetAllRoles()
         {
-            var allRoles = _context.Roles.Select(MapToRolesVM()).ToList();
+            var allRoles = _context.Roles.ToList();
 
             return allRoles;
         }

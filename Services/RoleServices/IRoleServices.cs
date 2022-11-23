@@ -8,7 +8,7 @@ namespace WebProjectExam.Services.RoleServices
     public interface IRoleServices
     {
         public IdentityRole GetRoleById(string Id);
-        public IEnumerable<RoleVm> GetAllRoles();
+        public IEnumerable<IdentityRole> GetAllRoles();
         public void Edit(RoleVm role);
         public void Delete(string Id);
             

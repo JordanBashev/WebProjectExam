@@ -6,6 +6,7 @@ using WebProjectExam.Models.Entities;
 using WebProjectExam.Models.ViewModels;
 using WebProjectExam.Services.OrderSevices;
 using WebProjectExam.Services.ShoeServices;
+using WebProjectExam.Services.UserServices;
 
 namespace WebProjectExam.Controllers
 {
@@ -22,58 +23,23 @@ namespace WebProjectExam.Controllers
 
         public IActionResult AllUserOrders(ShoeVM allOrderedShoes)
         {
-            var orders = _orderServices.GetAll();
-            var orderCount = orders.Count();
-            allOrderedShoes.OrderedShoes = _orderServices.getOrderedShoes();
-
-            foreach (var shoe in allOrderedShoes.OrderedShoes)
-            {
-                shoe.Brand = _shoeServices.GetBrandByShoe(shoe);
-                shoe.Price = _shoeServices.GetPriceByShoe(shoe);
-                var TagExists = _shoeServices.GetTagByShoe(shoe);
-                if (TagExists != null)
-                {
-                    shoe.Tag = TagExists;
-                }
-                else
-                {
-                    shoe.Tag = null;
-                }
-                shoe.uri = _shoeServices.GetImageByShoe(shoe);
-                var getOrderStatus = _orderServices.getOrderByShoe(shoe);
-                shoe.order = getOrderStatus;
-            }
+            allOrderedShoes.UserOrderedShoes = _orderServices.getUserOrderedShoes();
             return View(allOrderedShoes);
         }
 
         public IActionResult AllOrders(ShoeVM allOrderedShoes)
         {
-            allOrderedShoes.OrderedShoes = _orderServices.get_All_Ordered_Shoes();
-            foreach (var shoe in allOrderedShoes.OrderedShoes)
-            {
-                shoe.Brand = _shoeServices.GetBrandByShoe(shoe);
-                shoe.Price = _shoeServices.GetPriceByShoe(shoe);
-                var TagExists = _shoeServices.GetTagByShoe(shoe);
-                if (TagExists != null)
-                {
-                    shoe.Tag = TagExists;
-                }
-                else
-                {
-                    shoe.Tag = null;
-                }
-                shoe.uri = _shoeServices.GetImageByShoe(shoe);
-                var getOrderStatus = _orderServices.getOrderByShoe(shoe);
-                shoe.order = getOrderStatus;
-            }
+            allOrderedShoes.OrderedShoes = _orderServices.get_All_Ordered_ShoesVM();               
             return View(allOrderedShoes);
         }
 
-        public IActionResult EditStatus(ShoeVM shoe ,int Id)
+        [HttpGet]
+        public IActionResult EditStatus(ShoeVM shoe ,string Id)
         {
-            var getShoeToEditStatus = _shoeServices.GetShoeById(Id);
-            var getOrderStatus = _orderServices.getOrderByShoe(getShoeToEditStatus);
-            shoe.Status = getOrderStatus.Status;
+            var getCurrOrder = _orderServices.getOrderByUserId(Id);
+            shoe.Status = getCurrOrder.Status;
+            shoe.userId = getCurrOrder.user_Id;
+            shoe.Id = getCurrOrder.shoe_Id;
             return View(shoe);
         }
 
@@ -83,12 +49,12 @@ namespace WebProjectExam.Controllers
             List<string> value = Status.Split("+").ToList();
             if (ModelState.IsValid)
             {
-                _orderServices.Edit(int.Parse(value[1]), value[0]);
+                _orderServices.Edit(value[1], value[0]);
             }
             return RedirectToAction(nameof(AllOrders));
         }
 
-        public IActionResult Delete(int id)
+        public IActionResult Delete(string id)
         {
             _orderServices.Delete(id);
             return RedirectToAction(nameof(AllUserOrders));

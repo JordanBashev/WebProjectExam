@@ -13,7 +13,7 @@ namespace WebProjectExam.Services.TagServices
 
         public Tag GetTagById(int Id);
 
-        public IEnumerable<TagVM> GetAll();
+        public IEnumerable<Tag> GetAll();
 
     }
 }
