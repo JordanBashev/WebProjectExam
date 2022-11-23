@@ -208,6 +208,27 @@ namespace WebProjectExam.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShoeId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Shoes_ShoeId",
+                        column: x => x.ShoeId,
+                        principalTable: "Shoes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Image",
                 columns: table => new
                 {
@@ -345,6 +366,11 @@ namespace WebProjectExam.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_ShoeId",
+                table: "Comments",
+                column: "ShoeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Image_Shoe_Id",
                 table: "Image",
                 column: "Shoe_Id",
@@ -353,7 +379,8 @@ namespace WebProjectExam.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_orders_shoe_Id",
                 table: "orders",
-                column: "shoe_Id");
+                column: "shoe_Id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_orders_user_Id",
@@ -401,6 +428,9 @@ namespace WebProjectExam.Migrations
 
             migrationBuilder.DropTable(
                 name: "Brands");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Image");

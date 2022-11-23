@@ -46,6 +46,8 @@
     <None Remove="Models\ViewModels\" />
     <None Remove="Views\Shoes\" />
     <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
+    <None Remove="Models\ViewModels\CommentVM\" />
+    <None Remove="Services\CommentServices\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\OrderSevices\" />
@@ -53,6 +55,8 @@
     <Folder Include="Views\Shoes\" />
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\Images\" />
+    <Folder Include="Models\ViewModels\CommentVM\" />
+    <Folder Include="Services\CommentServices\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\Images\" />

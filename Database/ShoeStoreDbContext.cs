@@ -30,6 +30,7 @@ namespace WebProjectExam.Database
         public DbSet<Image> Image { get; set; }
         public DbSet<Price> Prices { get; set; }
         public DbSet<ShoeToTag> ShoeToTags { get; set; }
+        public DbSet<Comment>Comments { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

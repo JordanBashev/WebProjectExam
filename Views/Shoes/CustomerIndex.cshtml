@@ -48,6 +48,7 @@
                 </td>
                 <td>
                     <a asp-action="AddToOrder" asp-route-id="@item.Id">Add To Cart</a>
+                    <a asp-controller="Comment" asp-action="AllShoeComments" asp-route-id="@item.Id">Comments</a>
                 </td>
             </tr>
         }

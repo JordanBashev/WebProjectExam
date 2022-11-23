@@ -1,0 +1,24 @@
+﻿@model WebProjectExam.Models.ViewModels.CommentVM.AllCommentsVM
+
+<a asp-action="Create" asp-route-id="@Model.Id">Create</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Desc</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Comments)
+        {
+            <tr>
+                <td>
+                    @item.Description
+                </td>
+                <td>                    
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
