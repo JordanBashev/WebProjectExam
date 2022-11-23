@@ -9,6 +9,8 @@ namespace WebProjectExam.Models.ViewModels.CommentVM
 		public List<Comment> Comments { get; set; }
 
 		public int Id { get; set; }
+
+		public string UserId { get; set; }
 	}
 }
 

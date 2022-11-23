@@ -134,15 +134,16 @@ namespace WebProjectExam.Controllers
         {
             var getShoe = shoeService.GetShoeById(id);
             var orderExists = orderServices.getOrderByShoe(getShoe);
+            var getUserOrders = orderServices.getAllOrderForLoggedUser();
             var error = @"<script language='javascript'>alert('Product is already added to cart'); </script>";
-            if (orderExists == null)
+            if (!getUserOrders.Any(x => x.User_Id == orderExists.user_Id))
             {
                 shoeService.AddToOrder(id);
                 return RedirectToAction(nameof(ShowCustomerShoes));
             }
             else
             {
-                return RedirectToAction(nameof(ShowCustomerShoes), "Shoes", new {error});
+                return RedirectToAction(nameof(ShowCustomerShoes), "Shoes", new { error });
             }
         }
     }

@@ -24,7 +24,6 @@ namespace WebProjectExam.Services.ShoeServices
     {
         HttpWebRequest request;
         HttpWebResponse response = null;
-        HttpContext context;
 
         private readonly ShoeStoreDbContext _context;
         private readonly SignInManager<User> _signInManager;
@@ -41,7 +40,7 @@ namespace WebProjectExam.Services.ShoeServices
             var brandToDelete = _context.Brands.FirstOrDefault(x => x.Shoe_Id == Id);
             var priceToDelete = _context.Prices.FirstOrDefault(x => x.Shoe_Id == Id);
             var imageToDelete = _context.Image.FirstOrDefault(x => x.Shoe_Id == Id);
-            
+
             //IF SUCH SHOE EXISTS DELETE 
             if (shoeToDelete != null)
             {
@@ -159,8 +158,8 @@ namespace WebProjectExam.Services.ShoeServices
         {
             var getShoe = GetShoeById(Id);
             var userId = _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var orderExists = _context.orders.FirstOrDefault(x => x.shoe_Id == getShoe.Id);
-            if (getShoe != null && userId != null && orderExists == null)
+
+            if (getShoe != null && userId != null)
             {
                 var orderToAdd = new Order()
                 {
@@ -176,7 +175,7 @@ namespace WebProjectExam.Services.ShoeServices
             {
                 throw new ArgumentException("How did we get here");
             }
-            
+
         }
 
         //MAPPING
@@ -214,6 +213,34 @@ namespace WebProjectExam.Services.ShoeServices
         {
             var shoe = _context.Shoes.FirstOrDefault(x => x.Id == Id);
             return shoe;
+        }
+
+        public ShoeVM GetShoeByIdAndUserIdVM(int Id, string userId)
+        {
+            var shoe = _context.Shoes.FirstOrDefault(x => x.Id == Id);
+            shoe.Price = _context.Prices.FirstOrDefault(x => x.Id == shoe.Id);
+            shoe.uri = _context.Image.FirstOrDefault(x => x.Id == shoe.Id);
+            shoe.Brand = _context.Brands.FirstOrDefault(x => x.Id == shoe.Id);
+            var GetStatus = _context.orders.FirstOrDefault(x => x.user_Id == userId);
+            shoe.order = GetStatus;
+            var getTag = _context.ShoeToTags.FirstOrDefault(x => x.ShoeId == shoe.Id);
+            shoe.Tag = _context.Tags.FirstOrDefault(x => x.Id == getTag.TagId);
+            var userName = _context.Users.FirstOrDefault(x => x.Id == userId).UserName;
+
+            var newShoe = new ShoeVM()
+            {
+                Id = shoe.Id,
+                Brand = shoe.Brand,
+                Price = shoe.Price,
+                Colour = shoe.Colour,
+                uri = shoe.uri.uri,
+                Size = shoe.Size,
+                order = shoe.order,
+                Tag = shoe.Tag.Name,
+                userId = userId,
+                Username = userName,
+            };
+            return newShoe;
         }
 
         public IEnumerable<TagVM> GetAllTags()
@@ -293,7 +320,8 @@ namespace WebProjectExam.Services.ShoeServices
         public string Stream(string link)
         {
             try
-            {                request = (HttpWebRequest)WebRequest.Create(link);
+            {
+                request = (HttpWebRequest)WebRequest.Create(link);
                 request.Timeout = 1000;
                 request.AllowWriteStreamBuffering = false;
                 response = (HttpWebResponse)request.GetResponse();
@@ -403,7 +431,7 @@ namespace WebProjectExam.Services.ShoeServices
 
         public void Dispose()
         {
-            
+
         }
     }
 }

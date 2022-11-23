@@ -12,9 +12,6 @@ namespace WebProjectExam.Models.Entities
 
         [ForeignKey(nameof(user_Id))]
         public User User { get; set; }
-
-        [ForeignKey(nameof(shoe_Id))]
-        public Shoe Shoe { get; set; }
     }
 }
 

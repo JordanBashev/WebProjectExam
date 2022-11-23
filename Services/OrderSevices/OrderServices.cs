@@ -23,16 +23,16 @@ namespace WebProjectExam.Services.OrderSevices
             _signInManager = signInManager;
         }
 
-        public void Delete(int Id)
+        public void Delete(string Id)
         {
-            var Order = _context.orders.FirstOrDefault(x => x.shoe_Id == Id);
+            var Order = _context.orders.FirstOrDefault(x => x.user_Id == Id);
             _context.orders.Remove(Order);
             _context.SaveChanges();
         }
 
-        public IEnumerable<OrderVM> GetAll()
+        public IEnumerable<Order> GetAll()
         {
-            var Orders = _context.orders.Select(MapToOrderVM()).ToList();
+            var Orders = _context.orders.ToList();
 
             return Orders;
         }
@@ -45,7 +45,7 @@ namespace WebProjectExam.Services.OrderSevices
             {
                 foreach (var shoe in Orders)
                 {
-                    orderedShoes.Add(_shoeService.GetShoeById(shoe.Shoe_Id));
+                    orderedShoes.Add(_shoeService.GetShoeById(shoe.shoe_Id));
                 }
             }
             return orderedShoes;
@@ -60,38 +60,32 @@ namespace WebProjectExam.Services.OrderSevices
             return userOrders;
         }
 
-        public IEnumerable<Shoe> getOrderedShoes()
+        public IEnumerable<ShoeVM> getUserOrderedShoes()
         {
             var userOrders = getAllOrderForLoggedUser();
-            List<Shoe> orderedShoes = new List<Shoe>();
+            List<ShoeVM> orderedShoes = new List<ShoeVM>();
             using (var _shoeService = new ShoeServices.ShoeServices(_context, _signInManager))
             {
                 foreach (var shoe in userOrders)
                 {
-                    orderedShoes.Add(_shoeService.GetShoeById(shoe.Shoe_Id));
+                    orderedShoes.Add(_shoeService.GetShoeByIdAndUserIdVM(shoe.Shoe_Id, shoe.User_Id));
                 }
             }
             return orderedShoes;
         }
 
-        public IEnumerable<ShoeVM> getOrderedShoesVM()
+        public IEnumerable<ShoeVM> get_All_Ordered_ShoesVM()
         {
-            var orders = getOrderedShoes();
-            List<ShoeVM> orderedShoesVM = new List<ShoeVM>();
-            foreach (var shoeVM in orderedShoesVM)
+            var Orders = GetAll();
+            List<ShoeVM> orderedShoes = new List<ShoeVM>();
+            using (var _shoeService = new ShoeServices.ShoeServices(_context, _signInManager))
             {
-                foreach (var shoe in orders)
+                foreach (var order in Orders)
                 {
-                    shoeVM.Brand = shoe.Brand;
-                    shoeVM.Price = shoe.Price;
-                    shoeVM.Colour = shoe.Colour;
-                    shoeVM.Size = shoe.Size;
-                    shoeVM.Status = shoe.order.Status;
-                    shoeVM.uri = shoe.uri.uri;
+                    orderedShoes.Add(_shoeService.GetShoeByIdAndUserIdVM(order.shoe_Id, order.user_Id));
                 }
-                orderedShoesVM.Add(shoeVM);
             }
-            return orderedShoesVM;
+            return orderedShoes;
         }
 
         public Order getOrderByShoe(Shoe shoe)
@@ -105,10 +99,21 @@ namespace WebProjectExam.Services.OrderSevices
             var order = _context.orders.FirstOrDefault(x => x.Id == Id);
             return order;
         }
-
-        public void Edit(int Id, string status)
+        public Order getOrderByShoeVM(ShoeVM shoe)
         {
-            var shoeStatusToEdit = _context.orders.FirstOrDefault(x => x.shoe_Id == Id);
+            var order = _context.orders.FirstOrDefault(x => x.shoe_Id == shoe.Id);
+            return order;
+        }
+
+        public Order getOrderByUserId(string userId)
+        {
+            var order = _context.orders.FirstOrDefault(x => x.user_Id == userId);
+            return order;
+        }
+
+        public void Edit(string Id, string status)
+        {
+            var shoeStatusToEdit = _context.orders.FirstOrDefault(x => x.user_Id == Id);
             if (shoeStatusToEdit != null)
             {
                 shoeStatusToEdit.Status = status;
@@ -141,6 +146,7 @@ namespace WebProjectExam.Services.OrderSevices
         {
             return _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
+
     }
 }
 

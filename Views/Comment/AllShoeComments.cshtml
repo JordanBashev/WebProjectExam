@@ -1,4 +1,9 @@
-﻿@model WebProjectExam.Models.ViewModels.CommentVM.AllCommentsVM
+﻿@using Microsoft.AspNetCore.Identity;
+@using WebProjectExam.Models.Entities;
+@model WebProjectExam.Models.ViewModels.CommentVM.AllCommentsVM
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 <a asp-action="Create" asp-route-id="@Model.Id">Create</a>
 
@@ -15,9 +20,12 @@
                 <td>
                     @item.Description
                 </td>
-                <td>                    
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
-                </td>
+                @if (item.UserId == Model.UserId)
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    </td>
+                }
             </tr>
         }
     </tbody>

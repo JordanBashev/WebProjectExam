@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WebProjectExam.Models.Entities;
 
 namespace WebProjectExam.Models.ViewModels.UserVMs
 {

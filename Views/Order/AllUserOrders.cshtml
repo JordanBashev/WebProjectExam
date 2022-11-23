@@ -31,11 +31,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.OrderedShoes)
+        @foreach (var item in Model.UserOrderedShoes)
         {
             <tr>
                 <td>
-                    <img src="/Images/@item.uri.uri" style="width:100px ; height:100px" />
+                    <img src="/Images/@item.uri" style="width:100px ; height:100px" />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Colour)
@@ -53,7 +53,7 @@
                     @Html.DisplayFor(modelItem => item.order.Status)
                 </td>
                 <td>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Remove</a>
+                    <a asp-action="Delete" asp-route-id="@item.userId">Remove</a>
                 </td>
             </tr>
         }

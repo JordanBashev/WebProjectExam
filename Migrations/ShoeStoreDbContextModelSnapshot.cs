@@ -242,9 +242,6 @@ namespace WebProjectExam.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("shoe_Id")
-                        .IsUnique();
-
                     b.HasIndex("user_Id");
 
                     b.ToTable("orders");
@@ -289,9 +286,14 @@ namespace WebProjectExam.Migrations
                     b.Property<int?>("TagId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("orderId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TagId");
+
+                    b.HasIndex("orderId");
 
                     b.ToTable("Shoes");
                 });
@@ -486,17 +488,9 @@ namespace WebProjectExam.Migrations
 
             modelBuilder.Entity("WebProjectExam.Models.Entities.Order", b =>
                 {
-                    b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
-                        .WithOne("order")
-                        .HasForeignKey("WebProjectExam.Models.Entities.Order", "shoe_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("WebProjectExam.Models.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("user_Id");
-
-                    b.Navigation("Shoe");
 
                     b.Navigation("User");
                 });
@@ -518,7 +512,13 @@ namespace WebProjectExam.Migrations
                         .WithMany()
                         .HasForeignKey("TagId");
 
+                    b.HasOne("WebProjectExam.Models.Entities.Order", "order")
+                        .WithMany()
+                        .HasForeignKey("orderId");
+
                     b.Navigation("Tag");
+
+                    b.Navigation("order");
                 });
 
             modelBuilder.Entity("WebProjectExam.Models.Entities.ShoeToTag", b =>
@@ -545,8 +545,6 @@ namespace WebProjectExam.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("Price");
-
-                    b.Navigation("order");
 
                     b.Navigation("uri");
                 });

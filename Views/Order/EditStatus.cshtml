@@ -21,29 +21,29 @@
                     @if (Model.Status == "Proccesing")
                     {
                         <option asp-f" value="@Model.Status"> @Model.Status </option>
-                        <option value="InProgress+@Model.Id"> InProgress </option>
-                        <option value="Shipping+@Model.Id"> Shipping </option>
-                        <option value="Received+@Model.Id"> Received </option>
+                        <option value="InProgress+@Model.userId"> InProgress </option>
+                        <option value="Shipping+@Model.userId"> Shipping </option>
+                        <option value="Received+@Model.userId"> Received </option>
                     }
                     else
                     {
                         @if (Model.Status == InProgress)
                         {
                             <option value="@Model.Status"> @Model.Status </option>
-                            <option value="Shipping+@Model.Id"> Shipping </option>
-                            <option value="Received+@Model.Id"> Received </option>
+                            <option value="Shipping+@Model.userId"> Shipping </option>
+                            <option value="Received+@Model.userId"> Received </option>
                         }
                         else if (Model.Status == Shipping)
                         {
                             <option value="@Model.Status"> @Model.Status </option>
-                            <option value="InProgress+@Model.Id"> InProgress </option>
-                            <option value="Received+@Model.Id"> Received </option>
+                            <option value="InProgress+@Model.userId"> InProgress </option>
+                            <option value="Received+@Model.userId"> Received </option>
                         }
                         else
                         {
                             <option value="@Model.Status"> @Model.Status </option>
-                            <option value="InProgress+@Model.Id"> InProgress </option>
-                            <option value="Shipping+@Model.Id"> Shipping </option>
+                            <option value="InProgress+@Model.userId"> InProgress </option>
+                            <option value="Shipping+@Model.userId"> Shipping </option>
                         }
                     }
                 </select>

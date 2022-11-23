@@ -10,8 +10,8 @@ using WebProjectExam.Services.RoleServices;
 
 namespace WebProjectExam.Controllers
 {
-	public class CommentController : Controller
-	{
+    public class CommentController : Controller
+    {
         private readonly ICommentService _commentService;
         private readonly SignInManager<User> _signInManager;
 
@@ -21,7 +21,7 @@ namespace WebProjectExam.Controllers
             _signInManager = signInManager;
         }
 
-        
+
         public IActionResult AllComments(AllCommentsVM commentsVM)
         {
             commentsVM.Comments = _commentService.ShowAllComments();
@@ -31,9 +31,14 @@ namespace WebProjectExam.Controllers
         public IActionResult AllShoeComments(AllCommentsVM commentsVM)
         {
             commentsVM.Comments = _commentService.ShowAllShoeComments(commentsVM.Id);
+            commentsVM.UserId = _signInManager.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
             return View(commentsVM);
         }
 
+        public IActionResult Create(CommentVM commentVM)
+        {
+            return View(commentVM);
+        }
 
         [HttpPost]
         public IActionResult Create(CommentVM commentVM, int id)
@@ -48,16 +53,17 @@ namespace WebProjectExam.Controllers
             coment.Id = id;
             return RedirectToAction(nameof(AllShoeComments), coment);
         }
-        public IActionResult Create()
-        {
-            return View();
-        }
 
         [HttpGet]
-        public IActionResult Edit (int Id)
+        public IActionResult Edit(int Id)
         {
-            return View();
+            var coment = _commentService.GetCommentById(Id);
+            CommentVM commentVM = new CommentVM();
+            commentVM.Id = Id;
+            commentVM.Shoe_Id = coment.ShoeId;
+            return View(commentVM);
         }
+
         [HttpPost]
         public IActionResult Edit(CommentVM commentVM)
         {
@@ -65,13 +71,13 @@ namespace WebProjectExam.Controllers
             {
                 _commentService.Edit(commentVM);
             }
-            return RedirectToAction(nameof(AllComments));
+            return RedirectToAction(nameof(AllShoeComments), commentVM);
         }
 
         public IActionResult Delete(int Id)
         {
             _commentService.Delete(Id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllComments));
 
         }
 

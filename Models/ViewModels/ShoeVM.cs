@@ -15,9 +15,14 @@ namespace WebProjectExam.Models.ViewModels
         public string Tag { get; set; }
         public string uri { get; set; }
         public string Status { get; set; }
+        public Order order { get; set; }
+        public string userId { get; set; }
+        public string Username { get; set; }
 
         public List<ShoeVM> Shoes { get; set; }
-        public IEnumerable<Shoe> OrderedShoes { get; set; }
+        public IEnumerable<ShoeVM> OrderedShoes { get; set; }
+        public IEnumerable<ShoeVM> UserOrderedShoes { get; set; }
+
 
     }
 }

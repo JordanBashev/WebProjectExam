@@ -27,6 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,7 +38,7 @@
         {
             <tr>
                 <td>
-                    <img src="/Images/@item.uri.uri" style="width:100px ; height:100px" />
+                    <img src="/Images/@item.uri" style="width:100px ; height:100px" />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Colour)
@@ -53,7 +56,10 @@
                     @Html.DisplayFor(modelItem => item.order.Status)
                 </td>
                 <td>
-                    <a asp-action="EditStatus" asp-route-id="@item.Id"> Edit Status </a>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    <a asp-action="EditStatus" asp-route-id="@item.userId"> Edit Status </a>
                 </td>
             </tr>
         }

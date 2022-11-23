@@ -43,6 +43,12 @@ namespace WebProjectExam.Services.CommentServices
             }
         }
 
+        public Comment GetCommentById(int id)
+        {
+            var comment = _context.Comments.Find(id);
+            return comment;
+        }
+
         public List<Comment> ShowAllComments()
         {
             return _context.Comments.ToList();

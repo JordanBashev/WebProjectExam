@@ -48,9 +48,9 @@ namespace WebProjectExam.Services.TagServices
         }
 
 
-        public IEnumerable<TagVM> GetAll()
+        public IEnumerable<Tag> GetAll()
         { 
-            var allTags = _context.Tags.Select(MapToTagVM()).ToList();
+            var allTags = _context.Tags.ToList();
 
             return allTags;
         }
