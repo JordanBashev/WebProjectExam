@@ -41,6 +41,7 @@ namespace WebProjectExam.Services.ShoeServices
             var brandToDelete = _context.Brands.FirstOrDefault(x => x.Shoe_Id == Id);
             var priceToDelete = _context.Prices.FirstOrDefault(x => x.Shoe_Id == Id);
             var imageToDelete = _context.Image.FirstOrDefault(x => x.Shoe_Id == Id);
+            
             //IF SUCH SHOE EXISTS DELETE 
             if (shoeToDelete != null)
             {
@@ -91,11 +92,11 @@ namespace WebProjectExam.Services.ShoeServices
                 //ADD SHOE TO DB AND THEN GET ITS ID
                 _context.Shoes.Add(shoeToCreate);
                 _context.SaveChanges();
-                var getCreatedUser = _context.Shoes.FirstOrDefault(x => x.Colour == shoemodel.Colour);
+                var getCreatedShoe = _context.Shoes.FirstOrDefault(x => x.Colour == shoemodel.Colour);
 
                 //USES THE ID WE GET FROM ABOVE CODE AND SETS VALUES
                 shoeToTags.TagId = getTag.Id;
-                shoeToTags.ShoeId = getCreatedUser.Id;
+                shoeToTags.ShoeId = getCreatedShoe.Id;
                 _context.ShoeToTags.Add(shoeToTags);
             }
             else
@@ -292,8 +293,7 @@ namespace WebProjectExam.Services.ShoeServices
         public string Stream(string link)
         {
             try
-            {
-                request = (HttpWebRequest)WebRequest.Create(link);
+            {                request = (HttpWebRequest)WebRequest.Create(link);
                 request.Timeout = 1000;
                 request.AllowWriteStreamBuffering = false;
                 response = (HttpWebResponse)request.GetResponse();

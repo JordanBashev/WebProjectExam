@@ -1,0 +1,28 @@
+﻿@model WebProjectExam.Models.ViewModels.CommentVM.CommentVM
+
+<h4>CommentVM</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Decriptions" class="control-label"></label>
+                <input type="text" asp-for="Decriptions" class="form-control" />
+                <span asp-validation-for="Decriptions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="AllComments">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -177,6 +177,30 @@ namespace WebProjectExam.Migrations
                     b.ToTable("Brands");
                 });
 
+            modelBuilder.Entity("WebProjectExam.Models.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ShoeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShoeId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("WebProjectExam.Models.Entities.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -432,6 +456,17 @@ namespace WebProjectExam.Migrations
                     b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
                         .WithOne("Brand")
                         .HasForeignKey("WebProjectExam.Models.Entities.Brand", "Shoe_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shoe");
+                });
+
+            modelBuilder.Entity("WebProjectExam.Models.Entities.Comment", b =>
+                {
+                    b.HasOne("WebProjectExam.Models.Entities.Shoe", "Shoe")
+                        .WithMany()
+                        .HasForeignKey("ShoeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
