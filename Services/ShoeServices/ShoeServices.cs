@@ -290,19 +290,19 @@ namespace WebProjectExam.Services.ShoeServices
             }
             return null;
         }
-
+        //RETURNS THE IMAGE OF THE GIVEN SHOE 
         public Image GetImageByShoe(Shoe shoe)
         {
             var image = _context.Image.FirstOrDefault(p => p.Shoe_Id == shoe.Id);
             return image;
         }
-
+        //RETURNS THE PRICE OF THE GIVEN SHOE 
         public Price GetPriceByShoe(Shoe shoe)
         {
             var price = _context.Prices.FirstOrDefault(x => x.Shoe_Id == shoe.Id);
             return price;
         }
-
+        //RETURNS THE BRAND OF THE GIVEN SHOE 
         public Brand GetBrandByShoe(Shoe shoe)
         {
             var brand = _context.Brands.FirstOrDefault(x => x.Shoe_Id == shoe.Id);
@@ -394,26 +394,17 @@ namespace WebProjectExam.Services.ShoeServices
 
                     {
                         fs.Write(read, 0, count);
-
                         count = s.Read(read, 0, read.Length);
-
                     }
                     //Close everything
-
                     fs.Close();
-
                     s.Close();
-
                     response.Close();
-
                     return fileName;
                 }
-
                 catch (System.Net.WebException)
-
                 {
                     if (response != null)
-
                         response.Close();
                     return null;
                 }
@@ -428,7 +419,6 @@ namespace WebProjectExam.Services.ShoeServices
                 File.Delete(fileName);
             }
         }
-
         public void Dispose()
         {
 
