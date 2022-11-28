@@ -1,0 +1,41 @@
+﻿<Properties StartupConfiguration="{F18419FF-C171-4F2F-887D-1A655375F375}|Default">
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.WebProjectExam PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Database/ShoeStoreDbContext.cs">
+    <Files>
+      <File FileName="Models/ViewModels/OrderVMs/OrderVM.cs" />
+      <File FileName="Services/CommentServices/CommentService.cs" />
+      <File FileName="Services/CommentServices/ICommentService.cs" />
+      <File FileName="Services/OrderSevices/OrderServices.cs" />
+      <File FileName="Views/Home/Index.cshtml" />
+      <File FileName="Views/_ViewImports.cshtml" />
+      <File FileName="Views/_ViewStart.cshtml" Line="1" Column="1" />
+      <File FileName="Views/Shared/_Layout.cshtml" Line="1" Column="1" />
+      <File FileName="Services/UserServices/UserServices.cs" />
+      <File FileName="Services/ShoeServices/ShoeServices.cs" Line="313" Column="21" />
+      <File FileName="Database/ShoeStoreDbContext.cs" Line="1" Column="1" />
+      <File FileName="appsettings.json" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="WebProjectExam" expanded="True">
+            <Node name="WebProjectExam" expanded="True">
+              <Node name="Database" expanded="True" />
+              <Node name="Services" expanded="True">
+                <Node name="ShoeServices" expanded="True" />
+              </Node>
+              <Node name="Views" expanded="True" />
+              <Node name="appsettings.json" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+</Properties>
